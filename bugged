@@ -1,0 +1,17 @@
+samples0.loc['cluster']=cluster.labels_
+c1=samples0.loc['cluster'] == 0
+c1s=samples0.loc[:, c1]
+
+c2=samples0.loc['cluster'] == 1
+c2s=samples0.loc[:, c2]
+
+meanExpression_c1 = c1s.mean(axis=1)
+meanExpression_c2 = c2s.mean(axis=1)
+
+diffExp_clus = pd.DataFrame(meanExpression_c1 - meanExpression_c2)
+diffExp_clus.columns = ['MeanExpDiff']
+diffExp_clus['absDiff'] = np.abs(diffExp_clus)
+diffExp_clus['MeanExpC1'] = meanExpression_c1
+diffExp_clus['MeanExpC2'] = meanExpression_c2
+diffExp_clus = diffExp_clus.sort_values(by='absDiff', ascending=False)
+print(diffExp_clus.iloc[0:])
